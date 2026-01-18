@@ -238,7 +238,7 @@ nav {
     align-items: center;
     justify-content: center;
     text-align: center;
-    background: url('studio-hero.png') center/cover no-repeat;
+    background: url('studio-professional.png') center/cover no-repeat;
     background-attachment: fixed;
 }
 
@@ -567,6 +567,67 @@ nav {
     box-shadow: 0 0 15px rgba(255, 184, 0, 0.1);
 }
 
+/* Multi-select Checkboxes */
+.checkbox-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 15px;
+    margin-top: 10px;
+    background: rgba(255, 255, 255, 0.02);
+    padding: 20px;
+    border-radius: 15px;
+    border: 1px solid var(--glass-border);
+}
+
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 10px;
+    transition: var(--transition);
+}
+
+.checkbox-item:hover {
+    background: rgba(255, 184, 0, 0.1);
+}
+
+.checkbox-item input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--primary);
+    border-radius: 5px;
+    background: transparent;
+    cursor: pointer;
+    position: relative;
+    transition: var(--transition);
+}
+
+.checkbox-item input[type="checkbox"]:checked {
+    background: var(--primary);
+    box-shadow: 0 0 10px var(--primary-glow);
+}
+
+.checkbox-item input[type="checkbox"]:checked::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #000;
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.checkbox-item span {
+    color: var(--text-main);
+    font-size: 1rem;
+    font-weight: 600;
+}
+
 /* Footer */
 footer {
     background: #000;
@@ -758,4 +819,167 @@ footer {
     .logo-text {
         font-size: 1.1rem;
     }
+}
+
+/* Stats Section */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 30px;
+    background: var(--bg-card);
+    padding: 50px;
+    border-radius: 30px;
+    border: 1px solid var(--glass-border);
+    text-align: center;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.stat-number {
+    font-size: 3rem;
+    font-weight: 900;
+    color: var(--primary);
+    font-family: 'Outfit', sans-serif;
+}
+
+.stat-label {
+    font-size: 1.1rem;
+    color: var(--text-dim);
+    font-weight: 700;
+}
+
+/* Workflow Section */
+.workflow {
+    padding: 150px 0;
+    background: #0a0a0a;
+}
+
+.workflow-steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 40px;
+    margin-top: 80px;
+}
+
+.step {
+    padding: 40px;
+    background: var(--glass);
+    border-radius: 25px;
+    border: 1px solid var(--glass-border);
+    transition: var(--transition);
+    position: relative;
+}
+
+.step:hover {
+    background: rgba(255, 184, 0, 0.05);
+    border-color: var(--primary-glow);
+    transform: translateY(-10px);
+}
+
+.step-icon {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: var(--primary);
+    margin-bottom: 25px;
+    font-family: 'Outfit', sans-serif;
+    opacity: 0.5;
+}
+
+.step h3 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+}
+
+.step p {
+    color: var(--text-dim);
+}
+
+/* Admin Panel Styles */
+.admin-login-link {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    color: #333;
+    text-decoration: none;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(10px);
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background: var(--bg-dark);
+    padding: 50px;
+    border-radius: 30px;
+    border: 1px solid var(--primary);
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 0 50px var(--primary-glow);
+}
+
+.admin-panel {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: var(--bg-dark);
+    z-index: 3000;
+    padding: 50px;
+    overflow-y: auto;
+}
+
+.admin-panel.active {
+    display: block;
+}
+
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 50px;
+    border-bottom: 1px solid #333;
+    padding-bottom: 20px;
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 30px;
+}
+
+.admin-table th,
+.admin-table td {
+    padding: 20px;
+    text-align: right;
+    border-bottom: 1px solid #222;
+}
+
+.admin-table th {
+    color: var(--primary);
+    font-weight: 800;
+}
+
+.close-admin {
+    background: #ff4444;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
 }

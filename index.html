@@ -13,6 +13,10 @@
         href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700;900&family=Amiri:wght@400;700&family=Outfit:wght@300;400;800&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
 </head>
 
 <body>
@@ -39,12 +43,11 @@
     <main>
         <section id="home" class="hero">
             <div class="container hero-content">
-                <h1 class="animate-up">جمال الصوت.. عظمة المعنى</h1>
-                <p class="animate-up delay-1">مساحة متخصصة في إنتاج المحتوى القرآني والهادف بأعلى معايير الجودة الصوتية
-                    والبصرية.</p>
+                <h1 class="animate-up">استوديو أهل القرآن</h1>
+                <p class="animate-up delay-1">إنتاج المحتوى القرآني والهادف بأعلى معايير الجودة الصوتية والبصرية</p>
                 <div class="hero-btns animate-up delay-2">
-                    <a href="#booking" class="btn-primary">ابدأ الإنتاج الآن</a>
-                    <a href="#services" class="btn-secondary">استعرض خدماتنا</a>
+                    <a href="#booking" class="btn-primary">ابدأ تسجيل مشروعك</a>
+                    <a href="#services" class="btn-secondary">خدماتنا الإبداعية</a>
                 </div>
             </div>
         </section>
@@ -54,25 +57,79 @@
                 <div class="about-content animate-left">
                     <div class="section-header" style="text-align: right;">
                         <p>عن الاستوديو</p>
-                        <h2>رؤية حضارية لنشر القرآن</h2>
+                        <h2>رؤية حضارية لخدمة كتاب الله</h2>
                     </div>
-                    <p style="font-size: 1.2rem; color: #ddd; margin-bottom: 30px;">
-                        نهتم بتسجيل ختمات القرآن الكريم كاملة بصوت نقي وخشوع يليق بكلام الله، باستخدام تجهيزات احترافية
-                        تضمن وضوح التلاوة ودقة الأداء.
+                    <p style="font-size: 1.25rem; color: #fff; margin-bottom: 30px; line-height: 1.8;">
+                        في "أهل القرآن"، لا نعتبر التسجيل مجرد عملية تقنية، بل هي <strong>أمانة شرعية</strong> ورسالة
+                        فنية نسعى من خلالها لتقديم كلام الله بأبهى صورة تليق بجلاله.
                     </p>
-                    <p style="font-size: 1.1rem; color: #aaa;">
-                        في استديو أهل القرآن نؤمن أن جودة الإخراج تعين على وصول المعنى، وأن جمال الصوت والصورة وسيلة
-                        لتعظيم كلام الله ونشره بأفضل صورة ممكنة. رسالتنا أن نُسهم في نشر القرآن والمحتوى الهادف بأسلوب
-                        معاصر.
+                    <p style="font-size: 1.1rem; color: #aaa; margin-bottom: 25px;">
+                        نحن ندمج بين الروحانية العميقة وأحدث التقنيات العالمية في هندسة الصوت والإنتاج المرئي، لنخلق
+                        تجربة إيمانية تصل إلى القلوب قبل الآذان.
                     </p>
                     <ul class="features-list">
-                        <li><span>✔</span> جودة إخراج احترافية</li>
-                        <li><span>✔</span> وقار وروحانية في التنفيذ</li>
-                        <li><span>✔</span> أمانة في النشر والإنتاج</li>
+                        <li><span>✔</span> بيئة عمل هادئة تساعد على الخشوع والتركيز.</li>
+                        <li><span>✔</span> مهندسو صوت متخصصون في مقامات التلاوة وتصحيح الأداء.</li>
+                        <li><span>✔</span> معالجة صوتية رقمية متقدمة (Mixing & Mastering) بمعايير عالمية.</li>
+                        <li><span>✔</span> إخراج بصري سينمائي يبرز وقار القارئ وعظمة الآيات.</li>
                     </ul>
                 </div>
                 <div class="about-image">
                     <img src="studio-mic.png" alt="Ahl Al Quran Studio Mic">
+                </div>
+            </div>
+
+            <!-- New Stats/Values Section -->
+            <div class="stats-container animate-up" style="margin-top: 80px;">
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <span class="stat-number">100%</span>
+                        <span class="stat-label">نقاوة صوتية</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">+500</span>
+                        <span class="stat-label">ساعة تسجيل</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">4K</span>
+                        <span class="stat-label">جودة مرئية</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">∞</span>
+                        <span class="stat-label">شغف بالإبداع</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- New Workflow Section -->
+        <section id="workflow" class="workflow">
+            <div class="container">
+                <div class="section-header">
+                    <p>رحلة الإبداع</p>
+                    <h2>كيف نصنع مشروعك؟</h2>
+                </div>
+                <div class="workflow-steps">
+                    <div class="step">
+                        <div class="step-icon">01</div>
+                        <h3>التخطيط والاختيار</h3>
+                        <p>ندرس معك طبيعة المحتوى، ونختار المقامات الصوتية والزوايا الإخراجية الأنسب للمشروع.</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-icon">02</div>
+                        <h3>التسجيل الاحترافي</h3>
+                        <p>في بيئة معزولة تماماً وباستخدام أفضل الميكروفونات، نبدأ رحلة التسجيل بكل هدوء ووقار.</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-icon">03</div>
+                        <h3>الهندسة والمونتاج</h3>
+                        <p>تتم معالجة الصوت بعناية فائقة، وإضافة التأثيرات السينمائية التي تضفي حيوية على العمل.</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-icon">04</div>
+                        <h3>التسليم والنشر</h3>
+                        <p>نقدم لك العمل في نسخته النهائية الجاهزة للنشر على كافة المنصات الرقمية بجودة تنافسية.</p>
+                    </div>
                 </div>
             </div>
         </section>
@@ -85,9 +142,9 @@
                 </div>
                 <div class="services-grid">
                     <div class="service-card">
-                        <div class="service-icon">�️</div>
+                        <div class="service-icon">🎙️</div>
                         <h3>كليب قرآني</h3>
-                        <p>تسجيل مقاطع القرآن الكريم صوتًا وفيديو بجودة عالية وتصوير سينمائي.</p>
+                        <p>تسجيل مقاطع القرآن الكريم صوتًا وفيديو بجودة عالية وتصوير سينمائي احترافي.</p>
                     </div>
                     <div class="service-card">
                         <div class="service-icon">🎧</div>
@@ -97,12 +154,12 @@
                     <div class="service-card">
                         <div class="service-icon">🎵</div>
                         <h3>أناشيد إسلامية</h3>
-                        <p>تسجيل أناشيد إسلامية بدون موسيقى وفق الضوابط الشرعية المعتمدة.</p>
+                        <p>تسجيل أناشيد إسلامية بدون موسيقى وفق الضوابط الشرعية المعتمدة والأمانة الفنية.</p>
                     </div>
                     <div class="service-card">
                         <div class="service-icon">🎥</div>
                         <h3>إنتاج سينمائي</h3>
-                        <p>تصوير فيديوهات ثابتة وسينمائية مناسبة للمنصات الرقمية العالمية.</p>
+                        <p>تصوير فيديوهات ثابتة وسينمائية مناسبة للمنصات الرقمية العالمية بأعلى جودة.</p>
                     </div>
                 </div>
             </div>
@@ -111,13 +168,11 @@
         <section id="gallery" class="gallery">
             <div class="container">
                 <div class="section-header">
-                    <p>خلف الكواليس</p>
-                    <h2>داخل الاستوديو</h2>
+                    <p>من أعمالنا</p>
+                    <h2>المحتوى القرآني والهادف</h2>
                 </div>
-                <div class="gallery-grid">
-                    <div class="gallery-item"><img src="studio-hero.png" alt="Studio 1"></div>
-                    <div class="gallery-item"><img src="studio-control.png" alt="Studio 2"></div>
-                    <div class="gallery-item"><img src="studio-mic.png" alt="Studio 3"></div>
+                <div id="dynamicGalleryGrid" class="gallery-grid">
+                    <!-- YouTube videos will be injected here via script.js -->
                 </div>
             </div>
         </section>
@@ -133,25 +188,26 @@
                         <div class="form-grid">
                             <div class="form-group">
                                 <label>الاسم الكريم</label>
-                                <input type="text" placeholder="أدخل اسمك" required>
+                                <input type="text" id="name" placeholder="أدخل اسمك" required>
                             </div>
                             <div class="form-group">
                                 <label>رقم التواصل</label>
-                                <input type="tel" placeholder="واتساب أو اتصال" required>
+                                <input type="tel" id="phone" placeholder="واتساب أو اتصال" required>
                             </div>
                             <div class="form-group full-width">
                                 <label>نوع الخدمة المطلوبة</label>
-                                <select required>
+                                <select id="service-type" required>
                                     <option value="" disabled selected>اختر النوع...</option>
-                                    <option>تسجيل مقاطع قرآنية</option>
+                                    <option>تسجيل ختمة كاملة</option>
+                                    <option>تسجيل كليب قرآني</option>
                                     <option>إنتاج بودكاست</option>
-                                    <option>تسجيل أناشيد</option>
+                                    <option>تسجيل أناشيد (بدون موسيقى)</option>
                                     <option>إنتاج فيديو سينمائي</option>
                                 </select>
                             </div>
                             <div class="form-group full-width">
                                 <label>تفاصيل العمل</label>
-                                <textarea rows="4" placeholder="أخبرنا عن فكرة مشروعك..."></textarea>
+                                <textarea id="message" rows="4" placeholder="أخبرنا عن فكرة مشروعك..."></textarea>
                             </div>
                         </div>
                         <button type="submit" class="btn-primary" style="width: 100%; margin-top: 30px;">إرسال
@@ -162,23 +218,80 @@
         </section>
     </main>
 
-    <footer>
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <h2 style="margin-bottom: 25px; text-align: center; color: var(--primary);">تسجيل دخول المسؤول</h2>
+            <div class="form-group">
+                <input type="password" id="adminPassword" placeholder="كلمة السر">
+            </div>
+            <button onclick="checkAdminPassword()" class="btn-primary"
+                style="width: 100%; margin-top: 20px;">دخول</button>
+            <button onclick="closeLoginModal()" class="btn-secondary"
+                style="width: 100%; margin-top: 10px;">إلغاء</button>
+        </div>
+    </div>
+
+    <div id="adminPanel" class="admin-panel">
+        <div class="admin-header">
+            <h2>لوحة التحكم - استوديو أهل القرآن</h2>
+            <button onclick="closeAdminPanel()" class="close-admin">إغلاق اللوحة</button>
+        </div>
+
+        <div class="admin-actions" style="margin-bottom: 40px; background: #111; padding: 30px; border-radius: 20px;">
+            <h3 style="margin-bottom: 20px; color: var(--primary);">إضافة عمل جديد للمعرض</h3>
+            <div class="form-grid" style="grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div class="form-group">
+                    <label>رابط الصورة أو الفيديو</label>
+                    <input type="text" id="newItemLink" placeholder="أدخل الرابط المباشر">
+                </div>
+                <div class="form-group">
+                    <label>وصف العمل</label>
+                    <input type="text" id="newItemDesc" placeholder="مثال: سورة البقرة - القارئ فلان">
+                </div>
+            </div>
+            <button onclick="addNewGalleryItem()" class="btn-primary" style="margin-top: 20px;">إضافة المشروع</button>
+        </div>
+
+        <div class="admin-data">
+            <h3 style="margin-bottom: 20px;">الأعمال الحالية</h3>
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>الوصف</th>
+                        <th>الرابط</th>
+                        <th>إجراءات</th>
+                    </tr>
+                </thead>
+                <tbody id="galleryDataTable">
+                    <!-- البيانات ستظهر هنا -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <footer style="position: relative;">
+        <!-- ... existing footer content ... -->
         <div class="container">
             <div class="footer-content">
                 <div class="footer-about">
                     <h3>Ahl Al Quran Studio</h3>
                     <p>نشر القرآن والمحتوى الهادف بأسلوب معاصر، مع الحفاظ على الوقار والروحانية.</p>
+                    <p style="margin-top: 10px; color: var(--primary); font-weight: 700;">📍 دمنهور - البحيرة</p>
                 </div>
                 <div class="footer-social">
-                    <a href="#">فيسبوك</a>
-                    <a href="#">انستجرام</a>
-                    <a href="#">يوتيوب</a>
-                    <a href="#">واتساب</a>
+                    <a href="https://www.facebook.com/share/1ATfanQkLE/" target="_blank"><i
+                            class="fab fa-facebook-f"></i></a>
+                    <a href="https://www.instagram.com/ahl.alquran.studio?igsh=a3d4a3p6aTdvNTQ3" target="_blank"><i
+                            class="fab fa-instagram"></i></a>
+                    <a href="https://youtube.com/@ahl.alquran.studio?si=Z_oIsvgSw-MlRQZa" target="_blank"><i
+                            class="fab fa-youtube"></i></a>
+                    <a href="https://wa.me/201065305050" target="_blank"><i class="fab fa-whatsapp"></i></a>
                 </div>
             </div>
             <div class="footer-bottom">
                 &copy; 2026 استوديو أهل القرآن. جميع الحقوق محفوظة.
             </div>
+            <a onclick="openLoginModal()" class="admin-login-link">لوحة التحكم</a>
         </div>
     </footer>
 

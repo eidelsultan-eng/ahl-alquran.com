@@ -1,20 +1,39 @@
+// Firebase Configuration
+const firebaseConfig = {
+    apiKey: "AIzaSyDGKHCYjB-ryi6To5lDwlYya6hFOS4i40E",
+    authDomain: "ahlquraan-29c5b.firebaseapp.com",
+    projectId: "ahlquraan-29c5b",
+    storageBucket: "ahlquraan-29c5b.firebasestorage.app",
+    messagingSenderId: "677127394598",
+    appId: "1:677127394598:web:b4487e06faf1230be95de7",
+    measurementId: "G-K7Y7B2KC99"
+};
+
+// Initialize Firebase (Compat Version)
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
 document.addEventListener('DOMContentLoaded', () => {
     // Loader
     const loader = document.querySelector('.loader-wrapper');
     window.addEventListener('load', () => {
-        loader.style.opacity = '0';
-        setTimeout(() => {
-            loader.style.display = 'none';
-        }, 500);
+        if (loader) {
+            loader.style.opacity = '0';
+            setTimeout(() => {
+                loader.style.display = 'none';
+            }, 500);
+        }
     });
 
     // Scroll Effect for Header
     const header = document.getElementById('header');
     window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
-            header.classList.add('scrolled');
-        } else {
-            header.classList.remove('scrolled');
+        if (header) {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
         }
     });
 
@@ -31,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }, observerOptions);
 
-    document.querySelectorAll('.animate-up, .service-card, .about-content, .about-image, .gallery-item').forEach(el => {
+    document.querySelectorAll('.animate-up, .service-card, .about-content, .about-image, .gallery-item, .step').forEach(el => {
         el.classList.add('animate-up');
         observer.observe(el);
     });
@@ -51,8 +70,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Close menu when a link is clicked
     navItems.forEach(item => {
         item.addEventListener('click', () => {
-            mobileMenuBtn.classList.remove('active');
-            navLinks.classList.remove('active');
+            if (mobileMenuBtn) mobileMenuBtn.classList.remove('active');
+            if (navLinks) navLinks.classList.remove('active');
         });
     });
 
@@ -68,15 +87,137 @@ document.addEventListener('DOMContentLoaded', () => {
             const message = document.getElementById('message').value;
 
             const whatsappMessage = `السلام عليكم ورحمة الله وبركاته%0A%0A` +
-                `*طلب حجز جديد من موقع استوديو أهل القرآن:*%0A` +
+                `*طلب جديد من موقع استوديو أهل القرآن:*%0A` +
                 `👤 *الاسم:* ${name}%0A` +
                 `📞 *الهاتف:* ${phone}%0A` +
                 `🛠️ *نوع الخدمة:* ${service}%0A` +
-                `📝 *تفاصيل:* ${message}`;
+                `📝 *التفاصيل:* ${message}`;
 
-            const whatsappURL = `https://wa.me/201234567890?text=${whatsappMessage}`; // Placeholder number
+            const whatsappURL = `https://wa.me/201065305050?text=${whatsappMessage}`;
 
             window.open(whatsappURL, '_blank');
         });
     }
+
+    // Admin Panel Logic
+    window.openLoginModal = () => {
+        document.getElementById('loginModal').classList.add('active');
+    };
+
+    window.closeLoginModal = () => {
+        document.getElementById('loginModal').classList.remove('active');
+    };
+
+    window.checkAdminPassword = () => {
+        const pass = document.getElementById('adminPassword').value;
+        if (pass === '010asd') {
+            document.getElementById('loginModal').classList.remove('active');
+            document.getElementById('adminPanel').classList.add('active');
+            loadGalleryData();
+        } else {
+            alert('كلمة السر خاطئة');
+        }
+    };
+
+    window.closeAdminPanel = () => {
+        document.getElementById('adminPanel').classList.remove('active');
+    };
+
+    // YouTube ID Extractor
+    function getYoutubeID(url) {
+        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+        const match = url.match(regExp);
+        return (match && match[2].length === 11) ? match[2] : null;
+    }
+
+    // Gallery Management (Firestore)
+    function loadGalleryData() {
+        db.collection('studioGallery').orderBy('timestamp', 'desc').onSnapshot((snapshot) => {
+            const data = [];
+            snapshot.forEach((doc) => {
+                data.push({
+                    id: doc.id,
+                    ...doc.data()
+                });
+            });
+
+            // Update Admin Table
+            const table = document.getElementById('galleryDataTable');
+            if (table) {
+                table.innerHTML = data.map((item) => `
+                    <tr>
+                        <td>${item.desc}</td>
+                        <td><a href="${item.link}" target="_blank">رابط اليوتيوب</a></td>
+                        <td><button onclick="deleteGalleryItem('${item.id}')" style="background:#ff4444; color:white; border:none; padding:5px 10px; border-radius:5px; cursor:pointer;">حذف</button></td>
+                    </tr>
+                `).join('');
+            }
+
+            // Update Public Gallery Grid
+            const grid = document.getElementById('dynamicGalleryGrid');
+            if (grid) {
+                grid.innerHTML = data.map(item => {
+                    const videoID = getYoutubeID(item.link);
+                    if (videoID) {
+                        return `
+                            <div class="gallery-item" style="height: auto;">
+                                <div class="video-container" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 20px;">
+                                    <iframe 
+                                        src="https://www.youtube.com/embed/${videoID}" 
+                                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;" 
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                        allowfullscreen>
+                                    </iframe>
+                                </div>
+                                <h4 style="margin-top: 15px; text-align: center; color: var(--primary);">${item.desc}</h4>
+                            </div>
+                        `;
+                    }
+                    return '';
+                }).join('');
+            }
+        });
+    }
+
+    // Load gallery on page load
+    loadGalleryData();
+
+    window.addNewGalleryItem = () => {
+        const link = document.getElementById('newItemLink').value;
+        const desc = document.getElementById('newItemDesc').value;
+
+        if (!link || !desc) {
+            alert('يرجى ملء كافة الحقول');
+            return;
+        }
+
+        if (!getYoutubeID(link)) {
+            alert('يرجى إدخال رابط يوتيوب صحيح');
+            return;
+        }
+
+        db.collection('studioGallery').add({
+            link,
+            desc,
+            timestamp: Date.now()
+        }).then(() => {
+            document.getElementById('newItemLink').value = '';
+            document.getElementById('newItemDesc').value = '';
+            alert('تمت إضافة الفيديو بنجاح');
+        }).catch(err => {
+            console.error(err);
+            alert('حدث خطأ أثناء الإضافة');
+        });
+    };
+
+    window.deleteGalleryItem = (id) => {
+        if (confirm('هل أنت متأكد من حذف هذا العمل؟')) {
+            db.collection('studioGallery').doc(id).delete()
+                .then(() => alert('تم الحذف بنجاح'))
+                .catch(err => {
+                    console.error(err);
+                    alert('حدث خطأ أثناء الحذف');
+                });
+        }
+    };
 });
