@@ -464,10 +464,62 @@ nav {
 }
 
 .gallery-item {
-    border-radius: 12px;
+    border-radius: 20px;
     overflow: hidden;
     transition: var(--transition);
     position: relative;
+    background: var(--bg-card);
+    border: 1px solid var(--glass-border);
+}
+
+.video-container {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    overflow: hidden;
+}
+
+.video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+.folder-item {
+    padding: 0;
+}
+
+.folder-header {
+    padding: 20px 30px;
+    background: linear-gradient(90deg, #1a1a1a, #111);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.folder-icon {
+    font-size: 2.5rem;
+    filter: drop-shadow(0 0 10px var(--primary));
+}
+
+.folder-info h3 {
+    color: var(--primary);
+    margin-bottom: 5px;
+    font-weight: 700;
+}
+
+.folder-info p {
+    color: #aaa;
+    font-size: 0.9rem;
+}
+
+.folder-container {
+    padding-bottom: 70% !important;
+    /* Taller for list view */
 }
 
 .gallery-item:hover {

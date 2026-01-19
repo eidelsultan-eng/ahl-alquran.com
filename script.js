@@ -123,11 +123,17 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('adminPanel').classList.remove('active');
     };
 
-    // YouTube ID Extractor
+    // Video ID Extractors
     function getYoutubeID(url) {
         const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
         const match = url.match(regExp);
         return (match && match[2].length === 11) ? match[2] : null;
+    }
+
+    function getGoogleDriveID(url) {
+        const regExp = /(?:https?:\/\/)?(?:drive\.google\.com\/(?:drive\/)?(?:file\/d\/|folders\/|open\?id=)|docs\.google\.com\/(?:drive\/)?(?:file\/d\/|folders\/|open\?id=))([a-zA-Z0-9_-]+)/;
+        const match = url.match(regExp);
+        return match ? match[1] : null;
     }
 
     // Gallery Management (Firestore)
@@ -157,20 +163,52 @@ document.addEventListener('DOMContentLoaded', () => {
             const grid = document.getElementById('dynamicGalleryGrid');
             if (grid) {
                 grid.innerHTML = data.map(item => {
-                    const videoID = getYoutubeID(item.link);
-                    if (videoID) {
+                    const youtubeID = getYoutubeID(item.link);
+                    const driveID = getGoogleDriveID(item.link);
+                    const isFolder = item.link.includes('folders/');
+
+                    let embedSrc = '';
+                    if (youtubeID) {
+                        embedSrc = `https://www.youtube.com/embed/${youtubeID}?modestbranding=1&rel=0&showinfo=0`;
                         return `
-                            <div class="gallery-item" style="height: auto;">
-                            <div class="video-container" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
-                                <iframe 
-                                    src="https://www.youtube.com/embed/${videoID}?modestbranding=1&rel=0&showinfo=0" 
-                                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;" 
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                                    allowfullscreen>
-                                </iframe>
+                            <div class="gallery-item animate-up">
+                                <div class="video-container">
+                                    <iframe src="${embedSrc}" allowfullscreen></iframe>
+                                </div>
                             </div>
-                        </div>
-                    `;
+                        `;
+                    } else if (driveID) {
+                        if (isFolder) {
+                            // Render as a full-width library card with Sandbox to prevent redirects
+                            embedSrc = `https://drive.google.com/embeddedfolderview?id=${driveID}#list`;
+                            return `
+                                <div class="gallery-item folder-item animate-up" style="grid-column: 1 / -1;">
+                                    <div class="folder-header">
+                                        <span class="folder-icon">🎙️</span>
+                                        <div class="folder-info">
+                                            <h3>${item.desc || 'المكتبة الصوتية'}</h3>
+                                            <p>اختر السورة للاستماع المباشر دون مغادرة الموقع</p>
+                                        </div>
+                                    </div>
+                                    <div class="folder-iframe-wrapper">
+                                        <iframe 
+                                            src="${embedSrc}" 
+                                            allowfullscreen 
+                                            sandbox="allow-scripts allow-same-origin allow-forms allow-popups">
+                                        </iframe>
+                                    </div>
+                                </div>
+                            `;
+                        } else {
+                            embedSrc = `https://drive.google.com/file/d/${driveID}/preview`;
+                            return `
+                                <div class="gallery-item animate-up">
+                                    <div class="video-container">
+                                        <iframe src="${embedSrc}" allowfullscreen></iframe>
+                                    </div>
+                                </div>
+                            `;
+                        }
                     }
                     return '';
                 }).join('');
@@ -190,8 +228,8 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        if (!getYoutubeID(link)) {
-            alert('يرجى إدخال رابط يوتيوب صحيح');
+        if (!getYoutubeID(link) && !getGoogleDriveID(link)) {
+            alert('يرجى إدخال رابط يوتيوب أو جوجل درايف صحيح');
             return;
         }
 
