@@ -123,6 +123,29 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('adminPanel').classList.remove('active');
     };
 
+    // Library Modal Logic
+    window.openLibraryModal = (title, driveID) => {
+        const modal = document.getElementById('libraryModal');
+        const titleEl = document.getElementById('libraryTitle');
+        const container = document.getElementById('libraryIframeContainer');
+
+        titleEl.innerText = title;
+        container.innerHTML = `<iframe 
+            src="https://drive.google.com/embeddedfolderview?id=${driveID}#list" 
+            allowfullscreen 
+            sandbox="allow-scripts allow-same-origin allow-forms allow-popups">
+        </iframe>`;
+
+        modal.classList.add('active');
+    };
+
+    window.closeLibraryModal = () => {
+        const modal = document.getElementById('libraryModal');
+        const container = document.getElementById('libraryIframeContainer');
+        container.innerHTML = '';
+        modal.classList.remove('active');
+    };
+
     // Video ID Extractors
     function getYoutubeID(url) {
         const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
@@ -179,23 +202,15 @@ document.addEventListener('DOMContentLoaded', () => {
                         `;
                     } else if (driveID) {
                         if (isFolder) {
-                            // Render as a full-width library card with Sandbox to prevent redirects
-                            embedSrc = `https://drive.google.com/embeddedfolderview?id=${driveID}#list`;
+                            // Render as a premium Card instead of showing the content
                             return `
-                                <div class="gallery-item folder-item animate-up" style="grid-column: 1 / -1;">
-                                    <div class="folder-header">
-                                        <span class="folder-icon">🎙️</span>
-                                        <div class="folder-info">
-                                            <h3>${item.desc || 'المكتبة الصوتية'}</h3>
-                                            <p>اختر السورة للاستماع المباشر دون مغادرة الموقع</p>
+                                <div class="gallery-item folder-card animate-up" onclick="openLibraryModal('${item.desc || 'المكتبة الصوتية'}', '${driveID}')">
+                                    <div class="card-overlay">
+                                        <div class="card-icon">🎙️</div>
+                                        <div class="card-content">
+                                            <h3>${item.desc || 'مكتبة التلاوات'}</h3>
+                                            <span class="view-btn">استمع الآن</span>
                                         </div>
-                                    </div>
-                                    <div class="folder-iframe-wrapper">
-                                        <iframe 
-                                            src="${embedSrc}" 
-                                            allowfullscreen 
-                                            sandbox="allow-scripts allow-same-origin allow-forms allow-popups">
-                                        </iframe>
                                     </div>
                                 </div>
                             `;
@@ -218,6 +233,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Load gallery on page load
     loadGalleryData();
+
+    // Add Default Entries if needed
+    const addDefaultEntries = () => {
+        const defaults = [
+            { desc: 'مصحف الشيخ محمد عبدالونيس', link: 'https://drive.google.com/drive/folders/1DpThS3h9DU3uPTfaXktJnNdM5496sk9T' },
+            { desc: 'مصحف الشيخ سلطان الطحاوي', link: 'https://drive.google.com/drive/folders/1woyvn8HguRwBDKHoVAnFzmfMKObiSpMv' },
+            { desc: 'مصحف الدكتور فرج سعيد زيدان', link: 'https://drive.google.com/drive/folders/1a9XQXvBD9QfAaemnXk4noK-Oyul2VcMs' },
+            { desc: 'مصحف الدكتور خميس عيسى', link: 'https://drive.google.com/drive/folders/1tD5i-PVVMKK4jqShkp3V7QAdnONG2hZt' }
+        ];
+
+        defaults.forEach(item => {
+            db.collection('studioGallery').where('desc', '==', item.desc).get()
+                .then(snapshot => {
+                    if (snapshot.empty) {
+                        db.collection('studioGallery').add({
+                            ...item,
+                            timestamp: Date.now()
+                        });
+                    }
+                });
+        });
+    };
+    addDefaultEntries();
 
     window.addNewGalleryItem = () => {
         const link = document.getElementById('newItemLink').value;
